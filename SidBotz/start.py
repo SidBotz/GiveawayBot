@@ -21,12 +21,59 @@ from TechVJ.utils.file_properties import get_name, get_hash, get_media_file_size
 logger = logging.getLogger(__name__)
 
 
+# Function to check if the user is a member of the channel
+async def is_member(client, user_id, channel_username):
+    try:
+        member = await client.get_chat_member(channel_username, user_id)
+        return member.status in [enums.ChatMemberStatus.MEMBER, enums.ChatMemberStatus.OWNER, enums.ChatMemberStatus.ADMINISTRATOR]
+    except:
+        return False
 
 @Client.on_message(filters.command("start") & filters.incoming)
 async def start(client, message):
     username = (await client.get_me()).username
     user_id = message.from_user.id
     first_name = message.from_user.first_name
+    channel_username = "your_channel_username"  # Replace with your channel username
+
+    # Check if the user is a member of the channel
+    if not await is_member(client, user_id, channel_username):
+        while True:
+            # Prompt user to join the channel
+            reply_markup = ReplyKeyboardMarkup(
+                [[KeyboardButton("Joined ✅")]],
+                resize_keyboard=True,
+                one_time_keyboard=True
+            )
+            ask_message = await client.ask(
+                chat_id=user_id,
+                text=(
+                    f"<b>🔔 You must join our channel to use this bot!</b>\n\n"
+                    f"👉 Click the button below to join:\n"
+                    f"➡️ [Join @{channel_username}](https://t.me/{channel_username})\n\n"
+                    f"Once you've joined, click 'Joined ✅'."
+                ),
+                reply_markup=reply_markup,
+                parse_mode="html"
+            )
+
+            # Check if the user responded with "Joined ✅"
+            if ask_message.text == "Joined ✅":
+                if await is_member(client, user_id, channel_username):
+                    await ask_message.reply(
+                        "<b>✅ Thank you for joining! You can now use the bot.</b>",
+                        reply_markup=ReplyKeyboardRemove()
+                    )
+                    break
+                else:
+                    await ask_message.reply(
+                        "<b>❌ You are not a member of the channel. Please join and try again.</b>"
+                    )
+            else:
+                await ask_message.reply(
+                    "<b>❌ Invalid response. Please click 'Joined ✅' after joining the channel.</b>"
+                )
+        return
 
     # Check if user exists in the database
     if not await db.is_user_exist(user_id):
@@ -40,11 +87,10 @@ async def start(client, message):
                 # Add referral if valid referrer ID
                 await db.add_referral(referrer_id, user_id)
 
-    # If the user already exists in the database
+    # Token verification or referral logic
     if len(message.command) == 2:
         data = message.command[1]
         if data.split("-", 1)[0] == "verify":
-            # Token verification logic
             try:
                 userid = data.split("-", 2)[1]
                 token = data.split("-", 3)[2]
