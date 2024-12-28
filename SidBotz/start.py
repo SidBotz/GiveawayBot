@@ -7,8 +7,6 @@ from validators import domain
 from Script import script
 from plugins.dbusers import db
 from pyrogram import Client, filters, enums
-from plugins.users_api import get_user, update_user_info
-from plugins.database import get_file_details
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
 from utils import verify_user, check_token, check_verification, get_token
@@ -17,8 +15,6 @@ import re
 import json
 import base64
 from urllib.parse import quote_plus
-from TechVJ.utils.file_properties import get_name, get_hash, get_media_file_size
-logger = logging.getLogger(__name__)
 
 
 # Function to check if the user is a member of the channel
@@ -117,7 +113,6 @@ async def start(client, message):
                         protect_content=True
                     )
             except Exception as e:
-                logger.error(f"Error during token verification: {e}")
                 return await message.reply_text(
                     text="<b>Invalid link or an error occurred during verification!</b>",
                     protect_content=True
@@ -161,7 +156,6 @@ async def participate_handler(client, callback_query):
             )
             return
     except Exception as e:
-        logger.error(f"Error checking participation status: {e}")
         await callback_query.message.edit_text(
             text="<b>Unable to verify participation status. Please try again later.</b>"
         )
@@ -180,7 +174,6 @@ async def participate_handler(client, callback_query):
                 reply_markup=InlineKeyboardMarkup(btn)
             )
         except Exception as e:
-            logger.error(f"Error generating verification URL: {e}")
             await callback_query.message.edit_text(
                 text="<b>An error occurred during verification. Please try again later.</b>"
             )
@@ -200,7 +193,6 @@ async def participate_handler(client, callback_query):
             text=f"<b>🎉 Congratulations {username}!\nYou have successfully participated in the giveaway of {giveaway_amount} X amount!</b>"
         )
     except Exception as e:
-        logger.error(f"Error handling giveaway participation: {e}")
         await callback_query.message.edit_text(
             text="<b>Something went wrong. Please try again later.</b>"
         )
