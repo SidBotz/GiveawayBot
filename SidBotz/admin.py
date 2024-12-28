@@ -1,5 +1,20 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
+import os
+import logging
+import random
+import asyncio
+from validators import domain
+from plugins.dbusers import db
+from pyrogram import Client, filters, enums
+from pyrogram.errors import ChatAdminRequired, FloodWait
+from pyrogram.types import *
+from utils import verify_user, check_token, check_verification, get_token
+from config import *
+import re
+import json
+import base64
+from urllib.parse import quote_plus
 
 ADMIN_USER_ID = 6521935712  # Admin User ID
 
