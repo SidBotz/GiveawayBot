@@ -27,6 +27,7 @@ VERIFY_TUTORIAL = "https://t.me/how_to_verify"
 ERROR_MESSAGE = bool(os.environ.get('ERROR_MESSAGE', True))
 
 REFERRAL_CHANNELS = ["botxhub"]
+
 RefferalAmount = os.environ.get("RefferalAmount", "Upto 5 ₹")
 
 # Configuration for tasks (update as per your bot setup)
