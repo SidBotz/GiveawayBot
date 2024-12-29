@@ -15,7 +15,7 @@ import json
 import base64
 from urllib.parse import quote_plus
 from pyrogram import enums
-
+from config import AUTH_CHANNEL as channel_username
 # Function to check if the user is a member of the channel
 async def is_member(client, user_id, channel_username):
     try:
@@ -29,7 +29,7 @@ async def start(client, message):
     username = (await client.get_me()).username
     user_id = message.from_user.id
     first_name = message.from_user.first_name
-    channel_username = "your_channel_username"  # Replace with your channel username
+    # Replace with your channel username
 
     # Check if the user is a member of the channel
     if not await is_member(client, user_id, channel_username):
