@@ -5,7 +5,7 @@ import logging
 import random
 import asyncio
 from validators import domain
-from plugins.dbusers import db
+from SidBotz.dbusers import db
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
@@ -15,6 +15,7 @@ import re
 import json
 import base64
 from urllib.parse import quote_plus
+from pyrogram import enums
 
 ADMIN_USER_ID = 6521935712  # Admin User ID
 
