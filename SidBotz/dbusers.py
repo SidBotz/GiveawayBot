@@ -104,6 +104,24 @@ class Database:
             upsert=True
         )
 
+    async def get_all_participants(self):
+        """
+        Retrieve all participant user IDs for the giveaway.
+        Returns:
+            list: A list of user IDs of participants.
+        """
+        data = await self.participation_col.find_one({'type': 'giveaway'})
+        return data.get('participants', []) if data else []
+
+    async def get_participant_count(self):
+        """
+        Get the total number of participants in the giveaway.
+        Returns:
+            int: Number of participants.
+        """
+        data = await self.participation_col.find_one({'type': 'giveaway'})
+        return len(data.get('participants', [])) if data else 0
+    
     async def choose_winner(self):
         # Chooses a random winner from participants
         giveaway = await self.participation_col.find_one({'type': 'giveaway'})
