@@ -16,6 +16,14 @@ ADMINS = int(os.environ.get("ADMINS", "6521935712"))
 DB_URI = os.environ.get("DB_URI", "mongodb+srv://sidbotz:s8dnBTTboTdkLIHz@cluster0.ygk8a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 DB_NAME = os.environ.get("DB_NAME", "EarningBot")
 
+
+SHORTLINK_URL = "test"
+SHORTLINK_API = "test"
+AUTH_CHANNEL = "SidBotz"
+
+
+
+
 # If You Want Error Message In Your Personal Message Then Turn It True Else If You Don't Want Then Flase
 ERROR_MESSAGE = bool(os.environ.get('ERROR_MESSAGE', True))
 
@@ -31,6 +39,3 @@ TASKS = [
     {"name": "", "link": "", "api": ""},
     {"name": "", "link": "", "api": ""},
 ]
-
-SHORTLINK_URL = "test"
-SHORTLINK_API = "test"
