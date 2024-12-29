@@ -75,8 +75,6 @@ async def start(client, message):
             "<b>Starting ..</b>",
             reply_markup=ReplyKeyboardRemove()
             )
-        await hmm.edit("Starting ...")
-        await hmm.edit("Starting .....")
         await hmm.delete()
     except:
         print("Okkk")
