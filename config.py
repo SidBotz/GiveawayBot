@@ -16,8 +16,8 @@ ADMINS = int(os.environ.get("ADMINS", "6521935712"))
 DB_URI = os.environ.get("DB_URI", "mongodb+srv://sidbotz:s8dnBTTboTdkLIHz@cluster0.ygk8a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 DB_NAME = os.environ.get("DB_NAME", "EarningBot")
 
-SHORTLINK_URL = "https://linkshortify.com"
-SHORTLINK_API = "1cd4f5fe57dbe634a344f7fa549b36414e18db7f"
+SHORTLINK_URL = "runurl.in"
+SHORTLINK_API = "784eea3b027929c09ae4598be0d9a0d6a8180ea1"
 AUTH_CHANNEL = "SidBotz"
 
 
