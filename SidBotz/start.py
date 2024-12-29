@@ -4,7 +4,7 @@ import logging
 import random
 import asyncio
 from validators import domain
-from plugins.dbusers import db
+from SidBotz.dbusers import db
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
@@ -14,7 +14,7 @@ import re
 import json
 import base64
 from urllib.parse import quote_plus
-
+from pyrogram import enums
 
 # Function to check if the user is a member of the channel
 async def is_member(client, user_id, channel_username):
@@ -49,7 +49,7 @@ async def start(client, message):
                     f"Once you've joined, click 'Joined ✅'."
                 ),
                 reply_markup=reply_markup,
-                parse_mode="html"
+                parse_mode=enums.ParseMode.MARKDOWN
             )
 
             # Check if the user responded with "Joined ✅"
