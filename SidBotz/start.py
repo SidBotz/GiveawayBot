@@ -85,7 +85,7 @@ async def start(client, message):
     
     if not await db.is_user_exist(user_id):
         await db.add_user(user_id, first_name)
-        await client.send_message(LOG_CHANNEL, script.LOG_TEXT.format(user_id, message.from_user.mention))
+        await client.send_message(LOG_CHANNEL, f"#NewUser\n{user_id}, { message.from_user.mention} Started Bot")
 
         # Referral logic if the user is new and a referral ID is provided
         if len(message.command) == 2:
@@ -152,7 +152,7 @@ async def start(client, message):
             f"📊 **Your Stats:**\n"
             f"✅ Referrals: {referrals}\n\n"
             f"🚀 Invite your friends to increase your winning chances!\n\n"
-            f"<blockquote>We are adding Task Features by completing task you will earn more and daily<\blockquote>"
+            f"<blockquote>We are adding Task Features by completing task you will earn more and daily</blockquote>"
         ),
         reply_markup=buttons
     )
