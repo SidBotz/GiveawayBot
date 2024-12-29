@@ -85,7 +85,7 @@ async def start(client, message):
     
     if not await db.is_user_exist(user_id):
         await db.add_user(user_id, first_name)
-        await client.send_message(LOG_CHANNEL, f"#NewUser\n{user_id}, { message.from_user.mention} Started Bot")
+        await client.send_message(LOG_CHANNEL, f"#NewUser\n{user_id}, {message.from_user.mention} Started Bot")
 
         # Referral logic if the user is new and a referral ID is provided
         if len(message.command) == 2:
