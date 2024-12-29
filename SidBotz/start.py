@@ -70,7 +70,19 @@ async def start(client, message):
                 )
         return
 
+    try:
+        hmm = await message.reply(
+            "<b>Starting ..</b>",
+            reply_markup=ReplyKeyboardRemove()
+            )
+        await hmm.edit("Starting ...")
+        await hmm.edit("Starting .....")
+        await hmm.delete()
+    except:
+        print("Okkk")
+
     # Check if user exists in the database
+    
     if not await db.is_user_exist(user_id):
         await db.add_user(user_id, first_name)
         await client.send_message(LOG_CHANNEL, script.LOG_TEXT.format(user_id, message.from_user.mention))
@@ -81,6 +93,10 @@ async def start(client, message):
             if referrer_id.isdigit() and referrer_id != str(user_id):
                 # Add referral if valid referrer ID
                 await db.add_referral(referrer_id, user_id)
+                try:
+                    await client.send_message(referrer_id, f"{message.from_user.mention} Started From Your Refferal Link\n\nYou Got 2 Points(points increase winning chance)")
+                except:
+                    print("Failed To Send Message")
 
     # Token verification or referral logic
     if len(message.command) == 2:
@@ -119,21 +135,24 @@ async def start(client, message):
 
     # Default buttons for `/start` command
     buttons = InlineKeyboardMarkup([
-        [InlineKeyboardButton('💝 Subscribe', url='https://t.me/botxhub')],
+        [InlineKeyboardButton('📢 Bot Updates', url='https://t.me/botxhub')],
         [
-            InlineKeyboardButton('💁‍♀️ Participate in Giveaway', callback_data='participate'),
-            InlineKeyboardButton('😊 About', callback_data='about')
+            InlineKeyboardButton('🎁 Participate in Giveaway', callback_data='participate'),
         ],
         [
-            InlineKeyboardButton('📢 Referral Program', callback_data='referral')
+            InlineKeyboardButton('👥 Referral Program', callback_data='referral')
         ]
     ])
+    referrals = await db.get_referral_count(user_id)  # Assuming this function exists
     await message.reply_text(
         text=(
             f"👋 Hello {message.from_user.mention},\n\n"
             f"Welcome to our bot! 🎉\n\n"
-            f"📌 Use the buttons below to participate in giveaways, learn more about us, "
-            f"or earn rewards through our referral program!"
+            f"📌 Use the buttons below to participate in giveaways"
+            f"📊 **Your Stats:**\n"
+            f"✅ Referrals: {referrals}\n\n"
+            f"🚀 Invite your friends to increase your winning chances!\n\n"
+            f"<blockquote>We are adding Task Features by completing task you will earn more and daily<\blockquote>"
         ),
         reply_markup=buttons
     )
