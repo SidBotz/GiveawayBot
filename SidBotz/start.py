@@ -15,7 +15,7 @@ import json
 import base64
 from urllib.parse import quote_plus
 from pyrogram import enums
-from config import AUTH_CHANNEL as channel_username, VERIFY_MODE, VERIFY_TUTORIAL, LOG_CHANNEL, GIVEAWAYCHNL
+from config import AUTH_CHANNEL as channel_username, VERIFY_MODE, VERIFY_TUTORIAL, LOG_CHANNEL, GIVEAWAYCHNL, REFFERLOG
 # Function to check if the user is a member of the channel
 async def is_member(client, user_id, channel_username):
     try:
@@ -96,6 +96,7 @@ async def start(client, message):
                 # Add referral if valid referrer ID
                 await db.add_referral(referrer_id, user_id)
                 try:
+                    await client.send_message(REFFERLOG, f"Name:- {message.from_user.mention}\nId:- {message.from_user.id}\n\n #Id{referrer_id}Date{datetime.now().strftime('%d/%m/%Y')}")
                     await client.send_message(referrer_id, f"{message.from_user.mention} Started From Your Refferal Link\n\nYou Got 2 Points(points increase winning chance)")
                 except:
                     print("Failed To Send Message")
