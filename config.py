@@ -23,6 +23,10 @@ AUTH_CHANNEL = "SidBotz"
 
 VERIFY_MODE = "True"
 VERIFY_TUTORIAL = "https://t.me/verify_kaise_kare"
+
+LOG_CHANNEL = "-1002440575475"
+
+GIVEAWAYCHNL = "-1002489640426"
 # If You Want Error Message In Your Personal Message Then Turn It True Else If You Don't Want Then Flase
 ERROR_MESSAGE = bool(os.environ.get('ERROR_MESSAGE', True))
 
