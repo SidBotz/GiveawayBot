@@ -19,19 +19,33 @@ from pyrogram import enums
 
 ADMIN_USER_ID = 6521935712  # Admin User ID
 
+from pyrogram import Client, filters
+import subprocess
+import os
+import sys
+
+# Define the repository URL
+REPO_URL = "https://github.com/SidBotz/GiveawayBot"
+
 @Client.on_message(filters.command("admin") & filters.user(ADMIN_USER_ID))
 async def admin_commands(client, message):
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("💰 Set Giveaway Amount", callback_data="set_amount"),
+        ],
+        [
             InlineKeyboardButton("🚫 Clear All Participants", callback_data="clear_participants")
         ],
         [
             InlineKeyboardButton("✅ Enable Participation", callback_data="enable_participation"),
+        ],
+        [
             InlineKeyboardButton("❌ Disable Participation", callback_data="disable_participation")
         ],
         [
             InlineKeyboardButton("🎉 Choose Giveaway Winner", callback_data="choose_winner"),
+        ],
+        [
             InlineKeyboardButton("📊 View Stats", callback_data="view_stats")
         ]
     ])
@@ -130,3 +144,70 @@ async def view_stats_callback(client, callback_query):
         f"✅ Participation Active: {'Yes' if is_participation_open else 'No'}"
     )
     await callback_query.message.edit_text(stats_message)
+
+@Client.on_message(filters.command("update") & filters.user(ADMIN_USER_ID))
+async def update_bot(client, message):
+    try:
+        await message.reply_text("🚀 Starting the update process...")
+
+        # Check if the repository is already linked
+        process = subprocess.Popen(
+            ["git", "remote", "-v"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        stdout, stderr = process.communicate()
+
+        if REPO_URL not in stdout:
+            # Add the repository as the remote if not already linked
+            await message.reply_text("🔗 Repository not linked. Adding remote...")
+            add_remote_process = subprocess.Popen(
+                ["git", "remote", "add", "origin", REPO_URL],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            add_stdout, add_stderr = add_remote_process.communicate()
+            if add_remote_process.returncode != 0:
+                await message.reply_text(f"❌ Failed to add remote!\n\nError:\n<code>{add_stderr}</code>", parse_mode="html")
+                return
+
+        # Pull the latest changes from the repository
+        await message.reply_text("📥 Pulling latest updates from the repository...")
+        pull_process = subprocess.Popen(
+            ["git", "pull", "origin", "main"],  # Adjust branch name if not "main"
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        pull_stdout, pull_stderr = pull_process.communicate()
+
+        if pull_process.returncode != 0:
+            await message.reply_text(f"❌ Failed to update the bot!\n\nError:\n<code>{pull_stderr}</code>", parse_mode="html")
+            return
+
+        # Install updated dependencies (if any)
+        await message.reply_text("📦 Installing updated dependencies (if any)...")
+        install_process = subprocess.Popen(
+            [sys.executable, "-m", "pip", "install", "-r", "req.txt"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        install_stdout, install_stderr = install_process.communicate()
+
+        if install_process.returncode != 0:
+            await message.reply_text(f"⚠️ Dependencies installation failed!\n\nError:\n<code>{install_stderr}</code>", parse_mode="html")
+            return
+
+        # Notify the admin that the update was successful
+        await message.reply_text(f"✅ Bot updated successfully!\n\n<b>Git Output:</b>\n<code>{pull_stdout}</code>", parse_mode="html")
+
+        # Restart the bot
+        await message.reply_text("♻️ Restarting the bot...")
+        os.execv(sys.executable, ['python'] + sys.argv)
+
+    except Exception as e:
+        await message.reply_text(f"❌ An error occurred during the update process!\n\nError:\n<code>{e}</code>", parse_mode="html")
+
