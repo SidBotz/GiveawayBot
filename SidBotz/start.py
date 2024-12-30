@@ -15,7 +15,7 @@ import json
 import base64
 from urllib.parse import quote_plus
 from pyrogram import enums
-from config import AUTH_CHANNEL as channel_username, VERIFY_MODE, VERIFY_TUTORIAL
+from config import AUTH_CHANNEL as channel_username, VERIFY_MODE, VERIFY_TUTORIAL, LOG_CHANNEL, GIVEAWAYCHNL
 # Function to check if the user is a member of the channel
 async def is_member(client, user_id, channel_username):
     try:
@@ -29,6 +29,10 @@ async def start(client, message):
     username = (await client.get_me()).username
     user_id = message.from_user.id
     first_name = message.from_user.first_name
+    try:
+        await client.send_message(LOG_CHANNEL, f"#StartCount\n{user_id}, {message.from_user.mention} Started Bot")
+    except:
+        print("log send faild")
     # Replace with your channel username
 
     # Check if the user is a member of the channel
@@ -72,12 +76,12 @@ async def start(client, message):
 
     try:
         hmm = await message.reply(
-            "<b>Starting ..</b>",
+            "<b>✨</b>",
             reply_markup=ReplyKeyboardRemove()
             )
         await hmm.delete()
-    except:
-        print("Okkk")
+    except Exception as e:
+        print(f"Okkk error {e}")
 
     # Check if user exists in the database
     
@@ -206,8 +210,9 @@ async def participate_handler(client, callback_query):
 
         await db.add_participant(user_id)  # Add the user as a participant
         await callback_query.message.edit_text(
-            text=f"<b>🎉 Congratulations {username}!\nYou have successfully participated in the giveaway of {giveaway_amount} X amount!</b>"
+            text=f"<b>🎉 Congratulations {username}!\nYou have successfully participated in the giveaway of {giveaway_amount}₹\nFor WinnerList and All Participated User List Join Here\n[Join And Check](https://t.me/+dFa46D-m-lhhNGY1)!</b>"
         )
+        await client.send_message(GIVEAWAYCHNL, f"{callback_query.from_user.first_name} Participated In Giveaway")
     except Exception as e:
         await callback_query.message.edit_text(
             text="<b>Something went wrong. Please try again later.</b>"
