@@ -16,18 +16,17 @@ ADMINS = int(os.environ.get("ADMINS", "6521935712"))
 DB_URI = os.environ.get("DB_URI", "mongodb+srv://sidbotz:s8dnBTTboTdkLIHz@cluster0.ygk8a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 DB_NAME = os.environ.get("DB_NAME", "EarningBot")
 
-SHORTLINK_URL = "runurl.in"
-SHORTLINK_API = "784eea3b027929c09ae4598be0d9a0d6a8180ea1"
+SHORTLINK_URL = "modijiurl.com"
+SHORTLINK_API = "d10e03db6269c71f61158a0148c34888ee757dcc"
 AUTH_CHANNEL = "SidBotz"
 
 
 VERIFY_MODE = "True"
-VERIFY_TUTORIAL = "https://t.me/how_to_verify"
+VERIFY_TUTORIAL = "https://t.me/verify_kaise_kare"
 # If You Want Error Message In Your Personal Message Then Turn It True Else If You Don't Want Then Flase
 ERROR_MESSAGE = bool(os.environ.get('ERROR_MESSAGE', True))
 
 REFERRAL_CHANNELS = ["botxhub"]
-
 RefferalAmount = os.environ.get("RefferalAmount", "Upto 5 ₹")
 
 # Configuration for tasks (update as per your bot setup)
