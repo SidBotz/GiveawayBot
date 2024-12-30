@@ -16,6 +16,8 @@ import json
 import base64
 from urllib.parse import quote_plus
 from pyrogram import enums
+from pyrogram import Client, filters
+from pyrogram.types import CallbackQuery
 
 ADMIN_USER_ID = 6521935712  # Admin User ID
 
@@ -27,26 +29,37 @@ import sys
 # Define the repository URL
 REPO_URL = "https://github.com/SidBotz/GiveawayBot"
 
+async def get_top_referrers_command(limit=10):
+    top_referrers = await db.get_top_referrers(limit)
+    if not top_referrers:
+        return "No referrers found."
+    
+    result = "Top Referrers:\n"
+    for idx, user in enumerate(top_referrers, 1):
+        result += f"{idx}. ID: {user['id']}, Name: {user['name']}, Referrals: {user['referral_count']}\n"
+    return result
+    
 @Client.on_message(filters.command("admin") & filters.user(ADMIN_USER_ID))
 async def admin_commands(client, message):
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("💰 Set Giveaway Amount", callback_data="set_amount"),
+            InlineKeyboardButton("💰 Set Giveaway Amount", callback_data="set_amount")
         ],
         [
             InlineKeyboardButton("🚫 Clear All Participants", callback_data="clear_participants")
         ],
         [
-            InlineKeyboardButton("✅ Enable Participation", callback_data="enable_participation"),
+            InlineKeyboardButton("✅ Enable Participation", callback_data="enable_participation")
         ],
         [
             InlineKeyboardButton("❌ Disable Participation", callback_data="disable_participation")
         ],
         [
-            InlineKeyboardButton("🎉 Choose Giveaway Winner", callback_data="choose_winner"),
+            InlineKeyboardButton("🎉 Choose Giveaway Winner", callback_data="choose_winner")
         ],
         [
-            InlineKeyboardButton("📊 View Stats", callback_data="view_stats")
+            InlineKeyboardButton("📊 View Stats", callback_data="view_stats"),
+            InlineKeyboardButton("🔝 Ten refferar", callback_data="topten")
         ]
     ])
     await message.reply_text(
@@ -54,6 +67,26 @@ async def admin_commands(client, message):
         reply_markup=buttons
     )
 
+
+# Pyrogram callback handler for showing top 10 referrers
+@Client.on_callback_query(filters.user(ADMIN_USER_ID) & filters.regex("topten"))
+async def top_ten_referrers_callback(client: Client, callback_query: CallbackQuery):
+    try:
+        # Get the top 10 referrers from the database
+        top_referrers = await db.get_top_referrers(limit=10)
+
+        # Prepare the response message
+        if not top_referrers:
+            response = "No referrers found."
+        else:
+            response = "**Top 10 Referrers:**\n"
+            for idx, user in enumerate(top_referrers, 1):
+                response += f"{idx}. **Name:** {user['name']}, **Referrals:** {user['referral_count']}\n"
+
+        # Edit the message with the response
+        await callback_query.message.edit_text(response)
+    except Exception as e:
+        await callback_query.message.edit_text(f"An error occurred: {str(e)}")
 
 @Client.on_callback_query(filters.user(ADMIN_USER_ID) & filters.regex("set_amount"))
 async def set_amount_callback(client, callback_query):
