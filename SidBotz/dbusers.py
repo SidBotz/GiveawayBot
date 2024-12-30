@@ -142,7 +142,30 @@ class Database:
             )
             return winner_id
         return None
-
+    async def get_top_referrers(self, limit=10):
+        """
+        Retrieves the top users with the highest number of referrals.
+        
+        Args:
+            limit (int): The number of top users to retrieve. Default is 10.
+    
+        Returns:
+            list: A list of dictionaries containing user details and referral counts.
+        """
+        pipeline = [
+            {
+                '$project': {
+                    'id': 1,
+                    'name': 1,
+                    'referral_count': {'$size': {'$ifNull': ['$referrals', []]}}
+                }
+            },
+            {'$sort': {'referral_count': -1}},
+            {'$limit': limit}
+        ]
+        top_users = await self.users_col.aggregate(pipeline).to_list(length=limit)
+        return top_users
+    
 
 # Initialize the Database instance
 db = Database(DATABASE_URI, DATABASE_NAME)
