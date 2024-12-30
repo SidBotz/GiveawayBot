@@ -21,7 +21,7 @@ SHORTLINK_API = "d10e03db6269c71f61158a0148c34888ee757dcc"
 AUTH_CHANNEL = "JeetoDaily"
 
 
-VERIFY_MODE = "True"
+VERIFY_MODE = "False"
 VERIFY_TUTORIAL = "https://t.me/verify_kaise_kare"
 
 LOG_CHANNEL = "-1002440575475"
