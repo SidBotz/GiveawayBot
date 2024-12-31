@@ -31,8 +31,8 @@ async def start(client, message):
     first_name = message.from_user.first_name
     try:
         await client.send_message(LOG_CHANNEL, f"#StartCount\n{user_id}, {message.from_user.mention} Started Bot")
-    except:
-        print("log send faild")
+    except Exception as e:
+        print(f"log send faild {e}")
     # Replace with your channel username
 
     # Check if the user is a member of the channel
@@ -60,9 +60,27 @@ async def start(client, message):
             if ask_message.text == "Joined ✅":
                 if await is_member(client, user_id, channel_username):
                     await ask_message.reply(
-                        "<b>✅ Thank you for joining! You can now use the bot.</b>",
+                        "<b>✅ Thank you for joining! You can now use the bot.\nNow /Start To Participate</b>",
                         reply_markup=ReplyKeyboardRemove()
                     )
+                    if not await db.is_user_exist(user_id):
+                        await db.add_user(user_id, first_name)
+                        try:
+                            await client.send_message(LOG_CHANNEL, f"#NewUser\n{user_id}, {message.from_user.mention} Started Bot")
+                        except:
+                            print("ok")
+                        if len(message.command) == 2:
+                            referrer_id = message.command[1]
+                            if referrer_id.isdigit() and referrer_id != str(user_id):
+                                await db.add_referral(referrer_id, user_id)
+                                try:
+                                    await client.send_message(referrer_id, f"{message.from_user.mention} Started From Your Refferal Link\n\nYou Got 2 Points(points increase winning chance)")
+                                    await client.send_message(REFFERLOG, f"Name:- {message.from_user.mention}\nId:- {message.from_user.id}\n\n #Id{referrer_id}Date{datetime.now().strftime('%d/%m/%Y')}")
+                                    
+                                except Exception as e:
+                                    print(f"Failed To Send Message {e}")
+
+                                
                     break
                 else:
                     await ask_message.reply(
@@ -120,7 +138,7 @@ async def start(client, message):
                     await message.reply_text(
                         text=(
                             f"<b>Hey {message.from_user.mention}, You are successfully verified!</b>\n"
-                            f"Now you have unlimited access for all files till today midnight."
+                            f"Now you have access to participate ."
                         ),
                         protect_content=True
                     )
@@ -188,7 +206,7 @@ async def participate_handler(client, callback_query):
             verify_url = await get_token(client, user_id, f"https://telegram.me/{(await client.get_me()).username}?start=")
             btn = [
                 [InlineKeyboardButton("Verify", url=verify_url)],
-                [InlineKeyboardButton("How To Open Link & Verify", url=VERIFY_TUTORIAL)]
+                [InlineKeyboardButton("How To Verify", url=VERIFY_TUTORIAL)]
             ]
             await callback_query.message.edit_text(
                 text="<b>You are not verified!\nKindly verify to participate in the giveaway!</b>",
