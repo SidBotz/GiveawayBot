@@ -47,9 +47,9 @@ async def start(client, message):
             ask_message = await client.ask(
                 chat_id=user_id,
                 text=(
-                    f"<b>🔔 You must join our channel to use this bot!</b>\n\n"
+                    f"**🔔 You must join our channel to use this bot!**</b>\n\n"
                     f"👉 Click the button below to join:\n"
-                    f"➡️ [Join @{channel_username}](https://t.me/{channel_username})\n\n"
+                    f"➡️ Join [@{channel_username}](https://t.me/{channel_username})\n\n"
                     f"Once you've joined, click 'Joined ✅'."
                 ),
                 reply_markup=reply_markup,
@@ -60,7 +60,7 @@ async def start(client, message):
             if ask_message.text == "Joined ✅":
                 if await is_member(client, user_id, channel_username):
                     await ask_message.reply(
-                        "<b>✅ Thank you for joining! You can now use the bot.\nNow /Start To Participate</b>",
+                        "**✅ Thank you for joining! You can now use the bot.**\nNow /Start To Participate",
                         reply_markup=ReplyKeyboardRemove()
                     )
                     if not await db.is_user_exist(user_id):
@@ -84,19 +84,20 @@ async def start(client, message):
                     break
                 else:
                     await ask_message.reply(
-                        "<b>❌ You are not a member of the channel. Please join and try again.</b>"
+                        "❌ You are not a member of the channel. Please join and try again."
                     )
             else:
                 await ask_message.reply(
-                    "<b>❌ Invalid response. Please click 'Joined ✅' after joining the channel.</b>"
+                    "❌ Invalid response. Please click 'Joined ✅' after joining the channel."
                 )
         return
 
     try:
         hmm = await message.reply(
-            "<b>✨</b>",
+            "✨",
             reply_markup=ReplyKeyboardRemove()
             )
+        await asyncio.sleep(1)
         await hmm.delete()
     except Exception as e:
         print(f"Okkk error {e}")
