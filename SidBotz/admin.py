@@ -222,17 +222,7 @@ async def update_bot(client, message):
 
         # Install updated dependencies (if any)
         await message.reply_text("📦 Installing updated dependencies (if any)...")
-        install_process = subprocess.Popen(
-            [sys.executable, "-m", "pip", "install", "-r", "req.txt"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        install_stdout, install_stderr = install_process.communicate()
 
-        if install_process.returncode != 0:
-            await message.reply_text(f"⚠️ Dependencies installation failed!\n\nError:\n<code>{install_stderr}</code>", parse_mode="html")
-            return
 
         # Notify the admin that the update was successful
         await message.reply_text(f"✅ Bot updated successfully!\n\n<b>Git Output:</b>\n<code>{pull_stdout}</code>", parse_mode="html")
