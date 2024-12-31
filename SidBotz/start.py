@@ -79,6 +79,9 @@ async def start(client, message):
                                     
                                 except Exception as e:
                                     print(f"Failed To Send Message {e}")
+                                    await client.send_message(REFFERLOG, f"Name:- {message.from_user.mention}\nId:- {message.from_user.id}\n\n #Id{referrer_id}Date{datetime.now().strftime('%d/%m/%Y')}")
+                                    await client.send_message(referrer_id, f"{message.from_user.mention} Started From Your Refferal Link\n\nYou Got 2 Points(points increase winning chance)")
+                                    
 
                                 
                     break
