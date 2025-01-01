@@ -160,7 +160,7 @@ async def start(client, message):
 
     # Default buttons for `/start` command
     buttons = InlineKeyboardMarkup([
-        [InlineKeyboardButton('📢 Bot Updates', url='https://t.me/botxhub')],
+        [InlineKeyboardButton('📢 Bot Updates', url='https://t.me/JeetoDaily')],
         [
             InlineKeyboardButton('🎁 Participate in Giveaway', callback_data='participate'),
         ],
