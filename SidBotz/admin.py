@@ -203,7 +203,7 @@ async def update_bot(client, message):
             )
             add_stdout, add_stderr = add_remote_process.communicate()
             if add_remote_process.returncode != 0:
-                await message.reply_text(f"❌ Failed to add remote!\n\nError:\n<code>{add_stderr}</code>", parse_mode="html")
+                await message.reply_text(f"❌ Failed to add remote!\n\nError:\n<code>{add_stderr}</code>")
                 return
 
         # Pull the latest changes from the repository
@@ -217,7 +217,7 @@ async def update_bot(client, message):
         pull_stdout, pull_stderr = pull_process.communicate()
 
         if pull_process.returncode != 0:
-            await message.reply_text(f"❌ Failed to update the bot!\n\nError:\n<code>{pull_stderr}</code>", parse_mode="html")
+            await message.reply_text(f"❌ Failed to update the bot!\n\nError:\n<code>{pull_stderr}</code>")
             return
 
         # Install updated dependencies (if any)
@@ -225,12 +225,12 @@ async def update_bot(client, message):
 
 
         # Notify the admin that the update was successful
-        await message.reply_text(f"✅ Bot updated successfully!\n\n<b>Git Output:</b>\n<code>{pull_stdout}</code>", parse_mode="html")
+        await message.reply_text(f"✅ Bot updated successfully!\n\n<b>Git Output:</b>\n<code>{pull_stdout}</code>")
 
         # Restart the bot
         await message.reply_text("♻️ Restarting the bot...")
         os.execv(sys.executable, ['python'] + sys.argv)
 
     except Exception as e:
-        await message.reply_text(f"❌ An error occurred during the update process!\n\nError:\n<code>{e}</code>", parse_mode="html")
+        await message.reply_text(f"❌ An error occurred during the update process!\n\nError:\n<code>{e}</code>")
 
