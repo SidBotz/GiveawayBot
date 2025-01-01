@@ -144,7 +144,7 @@ async def start(client, message):
                             f"<b>Hey {message.from_user.mention}, You are successfully verified!</b>\n"
                             f"Now you have access to participate ."
                         ),
-                        protect_content=True
+                        protect_content=False
                     )
                     await verify_user(client, userid, token)
                 else:
