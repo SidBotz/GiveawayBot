@@ -16,8 +16,8 @@ ADMINS = int(os.environ.get("ADMINS", "6521935712"))
 DB_URI = os.environ.get("DB_URI", "mongodb+srv://SidBotz:2tDv408IfljeIb8h@cluster0.69ij8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 DB_NAME = os.environ.get("DB_NAME", "GiveawayBot")
 
-SHORTLINK_URL = "modijiurl.com"
-SHORTLINK_API = "d10e03db6269c71f61158a0148c34888ee757dcc"
+SHORTLINK_URL = "shortner.in"
+SHORTLINK_API = "ddf18f32fa21d9cd97ba02fb30ad3aa109b91bc6"
 AUTH_CHANNEL = "JeetoDaily"
 
 
@@ -42,3 +42,6 @@ TASKS = [
     {"name": "", "link": "", "api": ""},
     {"name": "", "link": "", "api": ""},
 ]
+
+
+
