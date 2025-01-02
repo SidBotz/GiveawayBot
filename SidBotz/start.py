@@ -161,9 +161,9 @@ async def start(client, message):
     # Default buttons for `/start` command
     buttons = InlineKeyboardMarkup([
         [InlineKeyboardButton('📢 Bot Updates', url='https://t.me/JeetoDaily')],
-        [
-            InlineKeyboardButton('🎁 Participate in Giveaway', callback_data='participate'),
-        ],
+    #    [
+       #     InlineKeyboardButton('🎁 Participate in Giveaway', callback_data='participate'),
+       # ],
         [
             InlineKeyboardButton('👥 Referral Program', callback_data='referral')
         ]
@@ -173,10 +173,10 @@ async def start(client, message):
         text=(
             f"👋 Hello {message.from_user.mention},\n\n"
             f"Welcome to our bot! 🎉\n\n"
-            f"📌 Use the buttons below to participate in giveaways"
+            f"📌 Use the buttons below to participate in Refferal program\n\n"
             f"📊 **Your Stats:**\n"
             f"✅ Referrals: {referrals}\n\n"
-            f"🚀 Invite your friends to increase your winning chances!\n\n"
+            f"🚀 Invite your friends to participate in refferal giveaway of 25₹!\n#Jo Jyada Reffer Karega Wahi Jitega\n"
             f"<blockquote>We are adding Task Features by completing task you will earn more and daily</blockquote>"
         ),
         reply_markup=buttons
