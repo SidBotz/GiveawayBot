@@ -74,3 +74,18 @@ async def check_verification(bot, userid):
             return True
     else:
         return False
+
+
+async def check_verification_api(userid):
+    tz = pytz.timezone('Asia/Kolkata')
+    today = date.today()
+    if userid in VERIFIED.keys():
+        EXP = VERIFIED[userid]
+        years, month, day = EXP.split('-')
+        comp = date(int(years), int(month), int(day))
+        if comp<today:
+            return False
+        else:
+            return True
+    else:
+        return False
